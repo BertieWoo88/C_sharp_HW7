@@ -67,17 +67,31 @@ Clear();
 //int rows = asknum("количество строк массива");
 //int column = asknum("количество столбцов массива");
 //int[,] mass = GetArray(rows, column);
+
 int[,] test = new int[,]
 {
-    {1,0,1,0,1},
-    {0,1,0,1,0},
-    {1,0,1,0,1},
-    {0,1,0,1,0},
-    {1,0,1,0,1}
+    {1,1,0,0,0},
+    {0,0,1,1,0},
+    {0,1,0,0,0},
+    {0,0,1,0,0},
+    {0,0,0,1,0}
 };
 
+int[,] test2 = new int[,]
+{
+    {0,1,0,1,0,1,0},
+    {1,0,1,0,1,0,1},
+    {0,1,0,1,0,1,0},
+    {1,0,1,0,1,0,1}
+// .+.+.+.
+// +.+.+.+
+// .+.+.+.
+// +.+.+.+
+};
+
+
 PrintArray(test);
-gameCicle(test, 10);
+gameCicle(test, 5);
 int[,] GetArray(int m, int n)
 {
     int[,] result = new int[m, n];
@@ -99,7 +113,7 @@ void PrintArray(int[,] inArray)
     {
         for (int j = 0; j < inArray.GetLength(1); j++)
         {
-            if (inArray[i, j]==1) Write('*');
+            if (inArray[i, j] == 1) Write('*');
             else Write('.');
         }
         WriteLine();
@@ -114,28 +128,35 @@ int asknum(string name)
 }
 
 void gameCicle(int[,] world, int k)
-{   int[,] copyworld = world;
+{
+    int control = 0;
+    
     for (int i = 0; i < k; i++)
-    {
+    {int[,] copyworld = new int [world.GetLength(0),world.GetLength(1)];
         for (int j = 0; j < world.GetLength(0); j++)
         {
             for (int h = 0; h < world.GetLength(1); h++)
             {
-                if (checkNeibors(j, h, world)) copyworld[j,h] = 1;
-                else copyworld[j,h] = 0;
+                control = checkNeighbours(j, h, world);
+                if ( control== 3) copyworld[j, h] = 1;
+                else if (control < 2 || control > 3) copyworld[j, h] = 0;
+                else if (world[j,h] ==1) copyworld[j, h] = 1;
             }
         }
-    world = copyworld;
-    WriteLine($"цикл {i+1}");
-    PrintArray(world);
+        world = copyworld;
+        Thread.Sleep(1000);
+        Clear();
+        WriteLine($"цикл {i + 1}");
+        PrintArray(world);
     }
 }
 
 
-bool checkNeibors(int row, int column, int[,] array)
+int checkNeighbours(int row, int column, int[,] array)
 {
-    int[] variants1 = { -1, -1, 1, -1, 1, 0, 0, 1 };
-    int[] variants2 = { -1, 0, 1, 1, 0, 1, -1, -1 };
+    //WriteLine($"({row},{column}) ->");
+    int[] variants1 = { -1, -1, -1, 0, 0, 1, 1, 1 };
+    int[] variants2 = { -1, 0, 1, -1, 1, -1, 0, 1 };
     int sum = 0;
     int r = 0; int c = 0;
     for (int i = 0; i < variants1.Length; i++)
@@ -145,8 +166,9 @@ bool checkNeibors(int row, int column, int[,] array)
         if (c < 0) c = array.GetLength(1) - 1;
         if (r == array.GetLength(0)) r = 0;
         if (c == array.GetLength(1)) c = 0;
+        //Write($"({r},{c}) ");
         sum += array[r, c];
     }
-    if (sum > 1 && sum <= 3) return true;
-    else return false;
+    //WriteLine($" Sym={sum}");
+    return sum;
 }
