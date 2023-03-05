@@ -151,13 +151,18 @@ void gameCicle(int[,] world, int k)
 bool checkNeighbours(int row, int column, int[,] array)
 {
     //WriteLine($"({row},{column}) ->");
-    int[] variants1 = { -1, -1, -1, 0, 0, 1, 1, 1 };
-    int[] variants2 = { -1, 0, 1, -1, 1, -1, 0, 1 };
+   // int[] variants1 = { -1, -1, -1, 0, 0, 1, 1, 1 };
+   // int[] variants2 = { -1, 0, 1, -1, 1, -1, 0, 1 };
+
+    int[,] variants = new int[,] // массив с вариантами поиска координат соседей
+    {  { -1, -1, -1, 0, 0, 1, 1, 1 },
+       { -1, 0, 1, -1, 1, -1, 0, 1 } 
+    };
     int sum = 0;
     int r = 0; int c = 0;
-    for (int i = 0; i < variants1.Length; i++)
+    for (int i = 0; i < variants.GetLength(1); i++)
     {
-        r = row + variants1[i]; c = column + variants2[i];
+        r = row + variants[0,i]; c = column + variants[1,i];
         if (r < 0) r = array.GetLength(0) - 1;
         if (c < 0) c = array.GetLength(1) - 1;
         if (r == array.GetLength(0)) r = 0;
