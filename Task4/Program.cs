@@ -64,35 +64,51 @@ using System;
 using static System.Console;
 Clear();
 
-//int rows = asknum("количество строк массива");
-//int column = asknum("количество столбцов массива");
+int rows = asknum("количество строк массива");
+int column = asknum("количество столбцов массива");
+int k = asknum("количество циклов игры");
 //int[,] mass = GetArray(rows, column);
+int[,] fastmass = GetFastArray(rows, column);
 
-int[,] test = new int[,]
+// int[,] test = new int[,]
+// {
+//     {1,1,0,0,0},
+//     {0,0,1,1,0},
+//     {0,1,0,0,0},
+//     {0,0,1,0,0},
+//     {0,0,0,1,0}
+// };
+
+// int[,] test2 = new int[,]
+// {
+//     {0,1,0,1,0,1,0},
+//     {1,0,1,0,1,0,1},
+//     {0,1,0,1,0,1,0},
+//     {1,0,1,0,1,0,1}
+// };
+
+
+//gameCicle(test, 5);
+gameCicle(fastmass, k);
+
+int[,] GetFastArray(int m, int n) // метод ввода значений массива по строкам
 {
-    {1,1,0,0,0},
-    {0,0,1,1,0},
-    {0,1,0,0,0},
-    {0,0,1,0,0},
-    {0,0,0,1,0}
-};
+    int[,] result = new int[m, n];
+    for (int i = 0; i < m; i++)
+    {
+            Console.Write ($"Введите {i+1} строку через пробел (1 - жив, 0 - мертв) : ");
+            string [] st = ReadLine().Split(' ');
+            for (int j = 0; j < n; j++)
+            {
+                if (st [j] !="1") st [j] ="0";
+                result[i,j] = int.Parse(st [j]);
+            }
+    }
 
-int[,] test2 = new int[,]
-{
-    {0,1,0,1,0,1,0},
-    {1,0,1,0,1,0,1},
-    {0,1,0,1,0,1,0},
-    {1,0,1,0,1,0,1}
-// .+.+.+.
-// +.+.+.+
-// .+.+.+.
-// +.+.+.+
-};
+    return result;
+}
 
-WriteLine("Первое покаление");
-PrintArray(test);
-gameCicle(test, 5);
-int[,] GetArray(int m, int n)
+int[,] GetArray(int m, int n) // метод ввода значений массива по одному
 {
     int[,] result = new int[m, n];
     for (int i = 0; i < m; i++)
@@ -128,7 +144,8 @@ int asknum(string name)
 }
 
 void gameCicle(int[,] world, int k)
-{
+{   WriteLine("Первое покаление");
+    PrintArray(world);
     for (int i = 0; i < k; i++)
     {int[,] copyworld = new int [world.GetLength(0),world.GetLength(1)];
         for (int j = 0; j < world.GetLength(0); j++)
@@ -140,7 +157,7 @@ void gameCicle(int[,] world, int k)
             }
         }
         world = copyworld;
-        //Thread.Sleep(1000);
+        //Thread.Sleep(1000); // анимация
         //Clear();
         WriteLine($"цикл {i + 1}");
         PrintArray(world);
