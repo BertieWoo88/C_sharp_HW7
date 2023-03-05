@@ -67,9 +67,11 @@ Clear();
 int rows = asknum("количество строк массива");
 int column = asknum("количество столбцов массива");
 int k = asknum("количество циклов игры");
-//int[,] mass = GetArray(rows, column);
+
 int[,] fastmass = GetFastArray(rows, column);
 
+// Тестовые массивы
+//int[,] mass = GetArray(rows, column); //для ввода элементов по одному
 // int[,] test = new int[,]
 // {
 //     {1,1,0,0,0},
@@ -86,8 +88,6 @@ int[,] fastmass = GetFastArray(rows, column);
 //     {0,1,0,1,0,1,0},
 //     {1,0,1,0,1,0,1}
 // };
-
-
 //gameCicle(test, 5);
 gameCicle(fastmass, k);
 
@@ -168,8 +168,6 @@ void gameCicle(int[,] world, int k)
 bool checkNeighbours(int row, int column, int[,] array)
 {
     //WriteLine($"({row},{column}) ->");
-   // int[] variants1 = { -1, -1, -1, 0, 0, 1, 1, 1 };
-   // int[] variants2 = { -1, 0, 1, -1, 1, -1, 0, 1 };
 
     int[,] variants = new int[,] // массив с вариантами поиска координат соседей
     {  { -1, -1, -1, 0, 0, 1, 1, 1 },
@@ -180,6 +178,7 @@ bool checkNeighbours(int row, int column, int[,] array)
     for (int i = 0; i < variants.GetLength(1); i++)
     {
         r = row + variants[0,i]; c = column + variants[1,i];
+         // если координаты соседа за рамками массива:
         if (r < 0) r = array.GetLength(0) - 1;
         if (c < 0) c = array.GetLength(1) - 1;
         if (r == array.GetLength(0)) r = 0;

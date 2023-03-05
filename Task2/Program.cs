@@ -23,8 +23,8 @@ WriteLine();
 int frows = asknum("строку нужного элемента массива");
 int fcolumn = asknum("столбец нужного элемента массива");
 checkElement(mass, frows, fcolumn);
-int b = checkElement(mass, 1,1);
-WriteLine(b);
+//int b = checkElement(mass, 1,1);
+//WriteLine(b);
 int checkElement(int[,] array, int row, int column) // Считаем что пользователь считает индекс массива с 1
 {   
     int element = 0;
