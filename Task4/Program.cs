@@ -89,7 +89,7 @@ int[,] test2 = new int[,]
 // +.+.+.+
 };
 
-
+WriteLine("Первое покаление");
 PrintArray(test);
 gameCicle(test, 5);
 int[,] GetArray(int m, int n)
@@ -129,30 +129,26 @@ int asknum(string name)
 
 void gameCicle(int[,] world, int k)
 {
-    int control = 0;
-    
     for (int i = 0; i < k; i++)
     {int[,] copyworld = new int [world.GetLength(0),world.GetLength(1)];
         for (int j = 0; j < world.GetLength(0); j++)
         {
             for (int h = 0; h < world.GetLength(1); h++)
             {
-                control = checkNeighbours(j, h, world);
-                if ( control== 3) copyworld[j, h] = 1;
-                else if (control < 2 || control > 3) copyworld[j, h] = 0;
-                else if (world[j,h] ==1) copyworld[j, h] = 1;
+                if ( checkNeighbours(j, h, world)) copyworld[j, h] = 1;
+                else copyworld[j, h] = 0;
             }
         }
         world = copyworld;
-        Thread.Sleep(1000);
-        Clear();
+        //Thread.Sleep(1000);
+        //Clear();
         WriteLine($"цикл {i + 1}");
         PrintArray(world);
     }
 }
 
 
-int checkNeighbours(int row, int column, int[,] array)
+bool checkNeighbours(int row, int column, int[,] array)
 {
     //WriteLine($"({row},{column}) ->");
     int[] variants1 = { -1, -1, -1, 0, 0, 1, 1, 1 };
@@ -170,5 +166,6 @@ int checkNeighbours(int row, int column, int[,] array)
         sum += array[r, c];
     }
     //WriteLine($" Sym={sum}");
-    return sum;
+    if ( sum== 3 || (sum==2 && array[row,column] ==1)) return true;
+    else  return false;
 }
